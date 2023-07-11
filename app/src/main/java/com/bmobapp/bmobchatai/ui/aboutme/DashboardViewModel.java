@@ -1,4 +1,4 @@
-package com.bmobapp.bmobchatai.ui.dashboard;
+package com.bmobapp.bmobchatai.ui.aboutme;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

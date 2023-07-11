@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 获取wifi网络状态的信息 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
+    <!-- android:theme="@style/Theme.BmobChatAI"  -->
+
     <application
         android:name=".BmobApp"
         android:allowBackup="true"
@@ -25,6 +27,7 @@
             android:name=".SplashActivity"
             android:excludeFromRecents="true"
             android:exported="true"
+            android:theme="@style/FlashTheme"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

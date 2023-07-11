@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -33,6 +35,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_login);
 
         setTitle("快速登录");
@@ -56,7 +61,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             //获取验证码
             String phone = phoneEdit.getText().toString().trim();
-            //这里不检查phone的合规性问题，自行补上
+
+            //这里不检查phone的更多合规性问题，自行补上
+            if(phone.length()!=11){
+                Toast.makeText(v.getContext(),"请输入正确的手机号码",Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            //发送验证码
             BmobSMS.requestSMSCode(phone, "", new QueryListener<Integer>() {
                 @Override
                 public void done(Integer integer, BmobException e) {
@@ -71,6 +83,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             String phone = phoneEdit.getText().toString().trim();
             String code = codeEdit.getText().toString().trim();
 
+            if(code.isEmpty() || code.length()!=6){
+                Toast.makeText(v.getContext(),"请输入验证码",Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            //执行登录操作
             BmobUser.signOrLoginByMobilePhone(phone, code, new LogInListener<BmobUser>() {
                 @Override
                 public void done(BmobUser o, BmobException e) {

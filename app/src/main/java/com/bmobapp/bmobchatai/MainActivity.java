@@ -3,6 +3,7 @@ package com.bmobapp.bmobchatai;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.WindowManager;
 
 import com.bmobapp.bmobchatai.bean.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -23,12 +24,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         if(!BmobUser.isLogin()){
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
         }
 
         super.onCreate(savedInstanceState);
+
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
