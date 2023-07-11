@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:id="@+id/left_chat_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:orientation="horizontal"
+        android:padding="5dp">
+        <ImageView
+            android:id="@+id/chatgpt"
+            android:src="@mipmap/chatgpt"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+        <TextView
+            android:layout_marginLeft="5dp"
+            android:padding="10dp"
+            android:id="@+id/left_chat_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="#FFEFD5"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="8pt" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_alignParentEnd="true"
+        android:id="@+id/right_chat_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="55dp"
+        android:orientation="horizontal"
+        android:padding="5dp">
+        <TextView
+            android:padding="10dp"
+            android:id="@+id/right_chat_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="#FFFF00"
+            android:text=""
+            android:textColor="@color/black"
+            android:layout_marginRight="5dp"
+            android:textSize="8pt" />
+        <ImageView
+            android:id="@+id/img_right"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@mipmap/bmob"/>
+    </LinearLayout>
+</RelativeLayout>

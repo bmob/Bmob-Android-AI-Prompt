@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ChatActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_above="@id/bottom_layout"
+        android:id="@+id/msg_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:padding="8dp"
+
+        android:layout_alignParentBottom="true"
+        android:id="@+id/bottom_layout">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_centerInParent="true"
+            android:id="@+id/message_edit_text"
+            android:background="@drawable/rounded_corner"
+            android:layout_toLeftOf="@id/send_bt"
+            android:paddingLeft="5dp"
+            android:textSize="8pt"
+            android:hint="请输入感兴趣的话题"/>
+        <Button
+            android:id="@+id/send_bt"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_width="80dp"
+            android:layout_marginStart="10dp"
+            android:padding="8dp"
+            android:text="发送"
+            android:background="@drawable/not_content_button"
+            android:layout_height="60dp"/>
+    </RelativeLayout>
+
+</RelativeLayout>
