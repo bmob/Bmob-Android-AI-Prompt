@@ -17,6 +17,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp" />
         <TextView
+            android:textIsSelectable="true"
             android:layout_marginLeft="5dp"
             android:padding="10dp"
             android:id="@+id/left_chat_text_view"

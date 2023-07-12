@@ -18,7 +18,9 @@ import com.bmobapp.bmobchatai.bean.Message;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.ai.BmobAI;
 import cn.bmob.v3.ai.ChatMessageListener;
 import cn.bmob.v3.exception.BmobException;
@@ -41,12 +43,16 @@ public class ChatActivity extends AppCompatActivity {
 
     String session;
 
-    String username = "13800138000";
+    String username = "default";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+        BmobUser user= BmobUser.getCurrentUser();
+        if(user!=null)
+            username = user.getUsername();
 
         recyclerView = findViewById(R.id.msg_recycler_view);
         messageEditText = findViewById(R.id.message_edit_text);
@@ -56,7 +62,7 @@ public class ChatActivity extends AppCompatActivity {
         title = intent.getStringExtra("title");
         session = intent.getStringExtra("name");
         String prompt = intent.getStringExtra("prompt");
-        String logo = intent.getStringExtra("logo");
+        String logo = intent.getStringExtra("img");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(title);

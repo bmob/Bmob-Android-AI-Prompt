@@ -5,7 +5,36 @@ import cn.bmob.v3.BmobObject;
 /**
  * 对应Bmob上面Prompt表的信息
  */
-public class Prompt extends BmobObject {
+public class Character extends BmobObject {
+    /**
+     * 这个AI助手有多少人在用
+     */
+    String userNum;
+
+    /**
+     * AI助手的名称
+     */
+    String title;
+
+    /**
+     * 角色的英文名
+     */
+    String name;
+
+    /**
+     * AI助手的图片
+     */
+    String img;
+
+    /**
+     * AI助手的prompt
+     */
+    String prompt;
+
+    /**
+     * AI助手的描述信息
+     */
+    String description;
 
     public String getTitle() {
         return title;
@@ -15,11 +44,6 @@ public class Prompt extends BmobObject {
         this.title = title;
     }
 
-    /**
-     * AI助手的名称
-     */
-    String title;
-
     public String getName() {
         return name;
     }
@@ -27,13 +51,6 @@ public class Prompt extends BmobObject {
     public void setName(String name) {
         this.name = name;
     }
-
-    String name;
-
-    /**
-     * AI助手的图片
-     */
-    String img;
 
     public String getImg() {
         return img;
@@ -59,16 +76,6 @@ public class Prompt extends BmobObject {
         this.description = description;
     }
 
-    /**
-     * AI助手的prompt
-     */
-    String prompt;
-
-    /**
-     * AI助手的描述信息
-     */
-    String description;
-
     public String getUserNum() {
         return userNum;
     }
@@ -77,9 +84,5 @@ public class Prompt extends BmobObject {
         this.userNum = userNum;
     }
 
-    /**
-     * 这个AI助手有多少人在用
-     */
-    String userNum;
 
 }

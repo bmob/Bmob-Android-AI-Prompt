@@ -21,10 +21,10 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@mipmap/android"
-            android:id="@+id/header_pic"/>
+            android:id="@+id/character_img"/>
 
         <LinearLayout
-            android:layout_toRightOf="@id/header_pic"
+            android:layout_toRightOf="@id/character_img"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="15dp"
             android:layout_weight="1"
@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:id="@+id/prompt_nums"
+                    android:id="@+id/character_user_num"
                     android:layout_marginLeft="5dp"
                     android:text="138.7万"
                     android:textSize="12dp"
@@ -62,7 +62,7 @@
 
             <TextView
                 android:layout_marginTop="5dp"
-                android:id="@+id/prompt_description"
+                android:id="@+id/character_description"
                 android:text="我是你的专属AI女友乔伊，我拥有你能想想到的美好品质，而且是一个恋爱高手，能够提供给你非常帮的恋爱体验和情感价值。"
                 android:textStyle="bold"
                 android:textSize="12dp"

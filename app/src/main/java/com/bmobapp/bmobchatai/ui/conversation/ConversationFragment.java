@@ -7,12 +7,11 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bmobapp.bmobchatai.adapter.PromptAdapter;
-import com.bmobapp.bmobchatai.bean.Prompt;
+import com.bmobapp.bmobchatai.adapter.CharacterAdapter;
+import com.bmobapp.bmobchatai.bean.Character;
 import com.bmobapp.bmobchatai.databinding.FragmentHomeBinding;
 
 import java.util.List;
@@ -34,12 +33,12 @@ public class ConversationFragment extends Fragment {
         final RecyclerView prompt_recycle_view = binding.promptRecyclerView;
 
         //从Bmob上面获取AI信息
-        BmobQuery<Prompt> query = new BmobQuery<>();
-        query.findObjects(new FindListener<Prompt>() {
+        BmobQuery<Character> query = new BmobQuery<>();
+        query.findObjects(new FindListener<Character>() {
             @Override
-            public void done(List<Prompt> promptList, BmobException e) {
-                PromptAdapter promptAdapter = new PromptAdapter(promptList,getContext());
-                prompt_recycle_view.setAdapter(promptAdapter);
+            public void done(List<Character> characterList, BmobException e) {
+                CharacterAdapter characterAdapter = new CharacterAdapter(characterList,getContext());
+                prompt_recycle_view.setAdapter(characterAdapter);
                 LinearLayoutManager llm = new LinearLayoutManager(getActivity());
                 llm.setStackFromEnd(true);
                 prompt_recycle_view.setLayoutManager(llm);
