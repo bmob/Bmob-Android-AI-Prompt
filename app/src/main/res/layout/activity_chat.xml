@@ -48,7 +48,7 @@
             android:id="@+id/voicebt"
             android:layout_alignParentStart="true"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/baseline_keyboard_24"/>
+            android:src="@drawable/baseline_keyboard_voice_24"/>
 
         <EditText
             android:layout_width="match_parent"

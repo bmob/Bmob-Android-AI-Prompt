@@ -81,6 +81,8 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         //初始化view
         recyclerView = findViewById(R.id.msg_recycler_view);
         messageEditText = findViewById(R.id.message_edit_text);
+        //输入框获取光标
+        messageEditText.requestFocus();
         sendButton = findViewById(R.id.send_bt);
         ImageButton clear_bt = findViewById(R.id.clearSession);
         clear_bt.setOnClickListener(this);
@@ -88,6 +90,10 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         keyboard_bt.setOnClickListener(this);
         ImageButton voice_bt = findViewById(R.id.voicebt);
         voice_bt.setOnClickListener(this);
+
+        //添加开场白
+        Message start = new Message(startMsg, Message.SEND_BY_BOT,session,username);
+        messageList.add(0,start);
 
         //初始化AI内容问答存储
         BmobQuery<Message> query = new BmobQuery<>();
@@ -100,9 +106,6 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                     messageList.addAll(list);
                 }
 
-                Message start = new Message(startMsg, Message.SEND_BY_BOT,session,username);
-
-                messageList.add(0,start);
                 chatAdapter = new ChatAdapter(messageList,logo);
                 recyclerView.setAdapter(chatAdapter);
                 LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
