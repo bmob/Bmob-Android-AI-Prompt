@@ -42,12 +42,21 @@
 
         android:layout_alignParentBottom="true"
         android:id="@+id/bottom_layout">
+        <ImageButton
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/voicebt"
+            android:layout_alignParentStart="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/baseline_keyboard_24"/>
+
         <EditText
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_centerInParent="true"
             android:id="@+id/message_edit_text"
             android:background="@drawable/rounded_corner"
+            android:layout_toRightOf="@id/voicebt"
             android:layout_toLeftOf="@id/send_bt"
             android:paddingLeft="5dp"
             android:textSize="8pt"
@@ -62,6 +71,30 @@
             android:text="发送"
             android:background="@drawable/not_content_button"
             android:layout_height="60dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:padding="8dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/bottom_layout_voice">
+        <ImageButton
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/keyboardbt"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/baseline_keyboard_24"/>
+        <Button
+            android:layout_toRightOf="@id/keyboardbt"
+            android:id="@+id/speakbt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/voice_shape"
+            android:textColor="#ffffff"
+            android:text="按住说话"/>
+
     </RelativeLayout>
 
 </RelativeLayout>

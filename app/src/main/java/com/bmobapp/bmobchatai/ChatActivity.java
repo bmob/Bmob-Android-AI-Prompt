@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 import com.bmobapp.bmobchatai.adapter.ChatAdapter;
 import com.bmobapp.bmobchatai.bean.Message;
@@ -83,6 +84,10 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         sendButton = findViewById(R.id.send_bt);
         ImageButton clear_bt = findViewById(R.id.clearSession);
         clear_bt.setOnClickListener(this);
+        ImageButton keyboard_bt = findViewById(R.id.keyboardbt);
+        keyboard_bt.setOnClickListener(this);
+        ImageButton voice_bt = findViewById(R.id.voicebt);
+        voice_bt.setOnClickListener(this);
 
         //初始化AI内容问答存储
         BmobQuery<Message> query = new BmobQuery<>();
@@ -274,6 +279,23 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                             ClearSession();
                         }
                     }).create().show();;
+        } else if (v.getId()==R.id.keyboardbt){
+            RelativeLayout key = findViewById(R.id.bottom_layout);
+            key.setVisibility(View.VISIBLE);
+
+            RelativeLayout voice = findViewById(R.id.bottom_layout_voice);
+            voice.setVisibility(View.INVISIBLE);
+
+            Log.d("ai","你点击了那个");
+        }
+        else if(v.getId()==R.id.voicebt){
+            RelativeLayout key = findViewById(R.id.bottom_layout);
+            key.setVisibility(View.INVISIBLE);
+
+            RelativeLayout voice = findViewById(R.id.bottom_layout_voice);
+            voice.setVisibility(View.VISIBLE);
+
+            Log.d("ai","你点击了这个");
         }
     }
 }
