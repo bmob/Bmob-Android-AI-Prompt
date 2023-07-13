@@ -34,7 +34,7 @@ public class ConversationFragment extends Fragment {
 
         //从Bmob上面获取AI信息
         BmobQuery<Character> query = new BmobQuery<>();
-        query.findObjects(new FindListener<Character>() {
+        query.order("rank").findObjects(new FindListener<Character>() {
             @Override
             public void done(List<Character> characterList, BmobException e) {
                 CharacterAdapter characterAdapter = new CharacterAdapter(characterList,getContext());

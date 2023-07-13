@@ -3,11 +3,31 @@ package com.bmobapp.bmobchatai.bean;
 import cn.bmob.v3.BmobObject;
 
 /**
- * 聊天内容类
+ * 聊天表类
  */
 public class Message extends BmobObject {
     public static String SEND_BY_ME="me";
     public static String SEND_BY_BOT="bot";
+
+    /**
+     * 会话
+     */
+    String session;
+
+    /**
+     * 内容的归属权
+     */
+    String username;
+
+    /**
+     * 发送的内容
+     */
+    String message;
+
+    /**
+     * 发送者（me和bot两种类型）
+     */
+    String sendBy;
 
     /**
      * 获取用户的名字
@@ -40,12 +60,6 @@ public class Message extends BmobObject {
     public void setSession(String session) {
         this.session = session;
     }
-
-    String session;
-
-    String username;
-
-    String message;
 
     /**
      * 获取聊天内容
@@ -80,9 +94,11 @@ public class Message extends BmobObject {
     }
 
     /**
-     * 发送者
+     * 构造函数
      */
-    String sendBy;
+    public Message(){
+
+    }
 
     /**
      * 聊天内容的构造函数

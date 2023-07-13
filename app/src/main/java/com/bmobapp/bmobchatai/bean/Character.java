@@ -1,18 +1,20 @@
 package com.bmobapp.bmobchatai.bean;
 
+import android.content.Intent;
+
 import cn.bmob.v3.BmobObject;
 
 /**
- * 对应Bmob上面Prompt表的信息
+ * 角色表类
  */
 public class Character extends BmobObject {
     /**
-     * 这个AI助手有多少人在用
+     * 多少人在用这个角色
      */
     String userNum;
 
     /**
-     * AI助手的名称
+     * 角色名称
      */
     String title;
 
@@ -22,19 +24,48 @@ public class Character extends BmobObject {
     String name;
 
     /**
-     * AI助手的图片
+     * 角色头像
      */
     String img;
 
     /**
-     * AI助手的prompt
+     * 角色的prompt
      */
     String prompt;
 
     /**
-     * AI助手的描述信息
+     * 角色的描述信息
      */
     String description;
+
+
+    /**
+     * 开始的对话语
+     */
+    String startMsg;
+
+    /**
+     * 排列顺序
+     */
+    Integer rank;
+
+    public Integer getRank() {
+        return rank;
+    }
+
+    public void setRank(Integer rank) {
+        this.rank = rank;
+    }
+
+    public String getStartMsg() {
+        return startMsg;
+    }
+
+    public void setStartMsg(String startMsg) {
+        this.startMsg = startMsg;
+    }
+
+
 
     public String getTitle() {
         return title;
@@ -83,6 +114,4 @@ public class Character extends BmobObject {
     public void setUserNum(String userNum) {
         this.userNum = userNum;
     }
-
-
 }

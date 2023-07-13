@@ -24,10 +24,10 @@
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
+            android:theme="@style/Base.Theme.BmobChatAI.ChatDetail"
             android:name=".SplashActivity"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/FlashTheme"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,6 +39,7 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main" />
         <activity
+            android:theme="@style/Base.Theme.BmobChatAI.ChatDetail"
             android:name=".ChatActivity"
             android:parentActivityName=".MainActivity" />
 

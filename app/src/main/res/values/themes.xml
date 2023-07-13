@@ -11,6 +11,21 @@
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item-->
     </style>
+
+    <style name="Base.Theme.BmobChatAI.ChatDetail" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <!--item name="android:windowBackground">@color/white</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:navigationBarColor">@color/transparent</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item-->
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
+
     <style name="FlashTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="statusBarBackground">@color/white</item>
         <item name="statusBarForeground">@color/transparent</item>

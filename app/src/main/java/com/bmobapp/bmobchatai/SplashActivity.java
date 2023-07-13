@@ -4,6 +4,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Window;
@@ -25,10 +26,11 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActionBar actionBar = getSupportActionBar();
+        /*ActionBar actionBar = getSupportActionBar();
         if(actionBar!=null){
             actionBar.hide();
-        }
+        }*/
+        getWindow().setStatusBarColor(Color.WHITE);
         setContentView(R.layout.activity_splash);
         mHandle.postDelayed(mRunnable,2000);
     }

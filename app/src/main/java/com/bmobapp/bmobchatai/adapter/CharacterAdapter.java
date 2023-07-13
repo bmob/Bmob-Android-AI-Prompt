@@ -55,6 +55,7 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
                 intent.putExtra("prompt", character.getPrompt());
                 intent.putExtra("name", character.getName());
                 intent.putExtra("img", character.getImg());
+                intent.putExtra("startMsg", character.getStartMsg());
                 v.getContext().startActivity(intent);
             }
         });

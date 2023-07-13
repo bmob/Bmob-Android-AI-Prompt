@@ -1,16 +1,20 @@
 package com.bmobapp.bmobchatai;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toolbar;
+import android.widget.ImageButton;
 
 import com.bmobapp.bmobchatai.adapter.ChatAdapter;
 import com.bmobapp.bmobchatai.bean.Message;
@@ -26,8 +30,10 @@ import cn.bmob.v3.ai.ChatMessageListener;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
+import cn.bmob.v3.realtime.Client;
 
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends AppCompatActivity implements View.OnClickListener {
 
     RecyclerView recyclerView;
     EditText messageEditText;
@@ -45,30 +51,39 @@ public class ChatActivity extends AppCompatActivity {
 
     String username = "default";
 
+    String startMsg="";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
-
-        BmobUser user= BmobUser.getCurrentUser();
-        if(user!=null)
-            username = user.getUsername();
-
-        recyclerView = findViewById(R.id.msg_recycler_view);
-        messageEditText = findViewById(R.id.message_edit_text);
-        sendButton = findViewById(R.id.send_bt);
-
+        //获取这个机器人的标题、名称、prompt和头像信息
         Intent intent = getIntent();
         title = intent.getStringExtra("title");
         session = intent.getStringExtra("name");
         String prompt = intent.getStringExtra("prompt");
         String logo = intent.getStringExtra("img");
+        startMsg = intent.getStringExtra("startMsg");
 
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_chat);
+
+        //设置头部标题栏
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(title);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle(title);
 
-        //创建Bmob AI实例
-        //bmobAI = new BmobAI();
+        //获取用户信息，这里没有做用户权限的判定
+        BmobUser user= BmobUser.getCurrentUser();
+        if(user!=null)
+            username = user.getUsername();
+
+        //初始化view
+        recyclerView = findViewById(R.id.msg_recycler_view);
+        messageEditText = findViewById(R.id.message_edit_text);
+        sendButton = findViewById(R.id.send_bt);
+        ImageButton clear_bt = findViewById(R.id.clearSession);
+        clear_bt.setOnClickListener(this);
+
         //初始化AI内容问答存储
         BmobQuery<Message> query = new BmobQuery<>();
         query.addWhereEqualTo("username",username);
@@ -80,6 +95,9 @@ public class ChatActivity extends AppCompatActivity {
                     messageList.addAll(list);
                 }
 
+                Message start = new Message(startMsg, Message.SEND_BY_BOT,session,username);
+
+                messageList.add(0,start);
                 chatAdapter = new ChatAdapter(messageList,logo);
                 recyclerView.setAdapter(chatAdapter);
                 LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
@@ -88,27 +106,20 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        //
-
-
-
         //设置prompt信息
         if(prompt!=null && !prompt.isEmpty())
             BmobApp.bmobAI.setPrompt(prompt);
 
         //点击发送提问到AI服务器的按钮
         sendButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
-
-                //sendButton.setEnabled(false);
-
                 //获取问题
                 String quesion = messageEditText.getText().toString().trim();
                 if(quesion.isEmpty() || quesion.trim()=="")
                     return;
-                //连接AI服务器（这个代码为了防止AI连接中断）
+
+                //连接AI服务器（这个代码为了防止AI连接中断，因为可能会存在某些情况下，比如网络切换、中断等，导致心跳连接失败）
                 BmobApp.bmobAI.Connect();
 
                 //显示问题
@@ -125,13 +136,12 @@ public class ChatActivity extends AppCompatActivity {
                     }
                     @Override
                     public void onFinish(String s) {
-                        //一次性返回全部结果，这个方法需要等待一段时间，友好性较差
+                        //一次性返回全部结果，结果回来之后，同步将信息保存到Bmob后端云上面
                         //addToChat(s,Message.SEND_BY_BOT);
                         Message newmessage = new Message(s,Message.SEND_BY_BOT,session,username);
                         newmessage.save(new SaveListener<String>() {
                             @Override
                             public void done(String s, BmobException e) {
-
                             }
                         });
 
@@ -140,7 +150,7 @@ public class ChatActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(String s) {
-                        //OpenAI的密钥错误或者超过OpenAI并发时，会返回这个错误
+                        //OpenAI的密钥错误或者超过OpenAI并发时，会返回这个错误，你也可以toast这个信息给用户
                         Log.d("ai",s);
                         sendButton.setEnabled(true);
                     }
@@ -172,13 +182,14 @@ public class ChatActivity extends AppCompatActivity {
                 if(message.getSendBy()==Message.SEND_BY_ME){
                     Message newmessage = new Message(s,Message.SEND_BY_BOT,session,username);
                     messageList.add(newmessage);
-                    chatAdapter.notifyDataSetChanged();
                     recyclerView.smoothScrollToPosition(chatAdapter.getItemCount());
                 }else{
                     message.setMessage(message.getMessage() + s);
-                    chatAdapter.notifyDataSetChanged();
                     recyclerView.smoothScrollToPosition(chatAdapter.getItemCount());
                 }
+
+                //更新界面
+                chatAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -203,10 +214,66 @@ public class ChatActivity extends AppCompatActivity {
 
                 //添加到本地
                 messageList.add(msg);
-
+                //更新界面
                 chatAdapter.notifyDataSetChanged();
                 recyclerView.smoothScrollToPosition(chatAdapter.getItemCount());
             }
         });
+    }
+
+    /**
+     * 清除会话信息
+     */
+    void ClearSession(){
+        //内置的清空会话
+        BmobApp.bmobAI.Clear(session);
+        //清空界面信息
+        messageList.clear();
+        chatAdapter.notifyDataSetChanged();
+        //真实进行删除操作
+        Message message = new Message();
+        BmobQuery<Message> query = new BmobQuery<>();
+        query.addWhereEqualTo("username",username);
+        query.addWhereEqualTo("session",session);
+        query.findObjects(new FindListener<Message>() {
+            @Override
+            public void done(List<Message> list, BmobException e) {
+                if(e==null && list!=null){
+                    for (int i=0;i<list.size();i++){
+                        Message m = list.get(i);
+                        message.delete(m.getObjectId(), new UpdateListener() {
+                            @Override
+                            public void done(BmobException e) {
+
+                            }
+                        });
+                    }
+
+
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onClick(View v) {
+        //删除会话信息
+        if (v.getId()==R.id.clearSession){
+            new AlertDialog.Builder(v.getContext())
+                    .setIcon(R.mipmap.chatgpt)
+                    .setTitle("系统提示")
+                    .setMessage("你真的要删除会话信息吗？")
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ClearSession();
+                        }
+                    }).create().show();;
+        }
     }
 }
