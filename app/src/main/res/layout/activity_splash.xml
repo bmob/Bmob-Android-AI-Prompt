@@ -10,15 +10,15 @@
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@mipmap/bot" />
+        android:src="@mipmap/chatgpt" />
 
     <TextView
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:textColor="#FFB6C1"
-        android:text="Bmob AI，让生活更智能"
+        android:textColor="#000000"
+        android:text="BeAI，让生活更智能"
         />
 
 </LinearLayout>
