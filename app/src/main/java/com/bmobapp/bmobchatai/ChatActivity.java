@@ -54,6 +54,8 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
     String startMsg="";
 
+    String logo ="";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //获取这个机器人的标题、名称、prompt和头像信息
@@ -61,7 +63,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         title = intent.getStringExtra("title");
         session = intent.getStringExtra("name");
         String prompt = intent.getStringExtra("prompt");
-        String logo = intent.getStringExtra("img");
+        logo = intent.getStringExtra("img");
         startMsg = intent.getStringExtra("startMsg");
 
         super.onCreate(savedInstanceState);
@@ -84,6 +86,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         //输入框获取光标
         messageEditText.requestFocus();
         sendButton = findViewById(R.id.send_bt);
+        sendButton.setOnClickListener(this);
         ImageButton clear_bt = findViewById(R.id.clearSession);
         clear_bt.setOnClickListener(this);
         ImageButton keyboard_bt = findViewById(R.id.keyboardbt);
@@ -91,6 +94,18 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         ImageButton voice_bt = findViewById(R.id.voicebt);
         voice_bt.setOnClickListener(this);
 
+        //设置prompt信息
+        if(prompt!=null && !prompt.isEmpty())
+            BmobApp.bmobAI.setPrompt(prompt);
+
+        //加载历史聊天记录
+        initHistoryChatList();
+    }
+
+    /**
+     * 初始化历史的聊天记录
+     */
+    private void initHistoryChatList(){
         //添加开场白
         Message start = new Message(startMsg, Message.SEND_BY_BOT,session,username);
         messageList.add(0,start);
@@ -113,66 +128,6 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                 recyclerView.setLayoutManager(llm);
             }
         });
-
-        //设置prompt信息
-        if(prompt!=null && !prompt.isEmpty())
-            BmobApp.bmobAI.setPrompt(prompt);
-
-        //点击发送提问到AI服务器的按钮
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //获取问题
-                String quesion = messageEditText.getText().toString().trim();
-                if(quesion.isEmpty() || quesion.trim()=="")
-                    return;
-
-                //连接AI服务器（这个代码为了防止AI连接中断，因为可能会存在某些情况下，比如网络切换、中断等，导致心跳连接失败）
-                BmobApp.bmobAI.Connect();
-
-                //显示问题
-                addToChat(quesion,Message.SEND_BY_ME);
-                messageEditText.setText("");
-
-                //发送内容到AI中
-                BmobApp.bmobAI.Chat(quesion, session, new ChatMessageListener() {
-                    @Override
-                    public void onMessage(String s) {
-                        //消息流的形式返回AI的结果
-                        addToLastMessage(s);
-                        Log.d("ai",s);
-                    }
-                    @Override
-                    public void onFinish(String s) {
-                        //一次性返回全部结果，结果回来之后，同步将信息保存到Bmob后端云上面
-                        //addToChat(s,Message.SEND_BY_BOT);
-                        Message newmessage = new Message(s,Message.SEND_BY_BOT,session,username);
-                        newmessage.save(new SaveListener<String>() {
-                            @Override
-                            public void done(String s, BmobException e) {
-                            }
-                        });
-
-                        sendButton.setEnabled(true);
-                    }
-
-                    @Override
-                    public void onError(String s) {
-                        //OpenAI的密钥错误或者超过OpenAI并发时，会返回这个错误，你也可以toast这个信息给用户
-                        Log.d("ai",s);
-                        sendButton.setEnabled(true);
-                    }
-
-                    @Override
-                    public void onClose() {
-                        //连接关闭了
-                        Log.d("ai","close");
-                        sendButton.setEnabled(true);
-                    }
-                });
-            }
-        });
-
     }
 
     /**
@@ -256,8 +211,6 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                             }
                         });
                     }
-
-
                 }
             }
         });
@@ -282,23 +235,73 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                             ClearSession();
                         }
                     }).create().show();;
-        } else if (v.getId()==R.id.keyboardbt){
+        }
+        //发送消息到AI服务器
+        else if (v.getId()==R.id.send_bt){
+            //获取问题
+            String quesion = messageEditText.getText().toString().trim();
+            if(quesion.isEmpty() || quesion.trim()=="")
+                return;
+
+            //连接AI服务器（这个代码为了防止AI连接中断，因为可能会存在某些情况下，比如网络切换、中断等，导致心跳连接失败）
+            BmobApp.bmobAI.Connect();
+
+            //显示问题
+            addToChat(quesion,Message.SEND_BY_ME);
+            messageEditText.setText("");
+
+            //发送内容到AI中
+            BmobApp.bmobAI.Chat(quesion, session, new ChatMessageListener() {
+                @Override
+                public void onMessage(String s) {
+                    //消息流的形式返回AI的结果
+                    addToLastMessage(s);
+                    Log.d("ai",s);
+                }
+                @Override
+                public void onFinish(String s) {
+                    //一次性返回全部结果，结果回来之后，同步将信息保存到Bmob后端云上面
+                    //addToChat(s,Message.SEND_BY_BOT);
+                    Message newmessage = new Message(s,Message.SEND_BY_BOT,session,username);
+                    newmessage.save(new SaveListener<String>() {
+                        @Override
+                        public void done(String s, BmobException e) {
+                        }
+                    });
+
+                    sendButton.setEnabled(true);
+                }
+
+                @Override
+                public void onError(String s) {
+                    //OpenAI的密钥错误或者超过OpenAI并发时，会返回这个错误，你也可以toast这个信息给用户
+                    Log.d("ai",s);
+                    sendButton.setEnabled(true);
+                }
+
+                @Override
+                public void onClose() {
+                    //连接关闭了
+                    Log.d("ai","close");
+                    sendButton.setEnabled(true);
+                }
+            });
+        }
+        //切换对话方式为语音对话
+        else if (v.getId()==R.id.keyboardbt){
             RelativeLayout key = findViewById(R.id.bottom_layout);
             key.setVisibility(View.VISIBLE);
 
             RelativeLayout voice = findViewById(R.id.bottom_layout_voice);
             voice.setVisibility(View.INVISIBLE);
-
-            Log.d("ai","你点击了那个");
         }
+        //切换对话方式为文字对话
         else if(v.getId()==R.id.voicebt){
             RelativeLayout key = findViewById(R.id.bottom_layout);
             key.setVisibility(View.INVISIBLE);
 
             RelativeLayout voice = findViewById(R.id.bottom_layout_voice);
             voice.setVisibility(View.VISIBLE);
-
-            Log.d("ai","你点击了这个");
         }
     }
 }

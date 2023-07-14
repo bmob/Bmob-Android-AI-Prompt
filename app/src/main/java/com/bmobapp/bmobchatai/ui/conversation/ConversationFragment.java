@@ -6,10 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bmobapp.bmobchatai.R;
 import com.bmobapp.bmobchatai.adapter.CharacterAdapter;
 import com.bmobapp.bmobchatai.bean.Character;
 import com.bmobapp.bmobchatai.databinding.FragmentHomeBinding;

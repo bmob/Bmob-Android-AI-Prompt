@@ -7,9 +7,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bmobapp.bmobchatai.R;
 import com.bmobapp.bmobchatai.databinding.FragmentAboutmeBinding;
 
 public class AboutmeFragment extends Fragment {
@@ -24,8 +27,7 @@ public class AboutmeFragment extends Fragment {
         binding = FragmentAboutmeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        //final TextView textView = binding.textDashboard;
-        //dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
         return root;
     }
 
